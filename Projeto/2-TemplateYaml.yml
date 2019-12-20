@@ -1,0 +1,61 @@
+# Este é um arquivo de tutorial mostrando como a linguagem yaml funciona
+# Um resumo dos elementos básicos do Yaml
+# Para comentários basta usar o caractere (#).
+# Yaml não permite multiplas linhas em comentário.
+
+# É importante a indentação quando se cria um objeto com estruturas
+# Vários documentos com fluxos únicos são separados por 3 hífens (---) no inicio e três pontos no fim (...).
+
+#Doc 1
+--- # Start
+tipo: "Teste" # ou 'Teste' ou teste
+teste: true
+numero: 1
+nulo: null
+... # End
+
+
+#Doc 2
+--- 
+pessoa: 
+  nome: &nome Fulano
+  sobrenome: Cicrano
+  idade: 45
+  data_nascimento: 1974-05-13 09:25:55 # Padrão ISO 8601 (yyyy-mm-ddThh:mm:ss.ffffff)
+  "estado civil": null
+  masculino: true
+  
+  # Abaixo duas formas de apresentar listas
+  # Os membros da lista são indicados por um hífen principal (-).
+  hobbies: 
+    - 'andar de bicicleta'
+    - patinar
+    - nadar
+  
+  # Os membros da lista são colocados entre colchetes e separados por vírgulas.
+  nadar: ["Praia", "Piscina", "Lago"]
+  amigos:
+    - nome: "João"
+      idade: 25
+  
+  # O YAML sempre requer dois pontos e vírgulas usados como separadores de lista, seguidos de espaço com valores escalares.
+    - {nome: "Eduardo", idade: 24}
+    - 
+      nome: "Frederico"
+      idade: 26
+  
+  # Para que o YAML leia mais de uma linha é necessário adicionar o simbolo (>)
+  descricao: >
+    Aqui tem algumas caracteristicas do fulano, 
+    ele possui 45 anos e tem alguns amigos.
+    Ele adora esportes.
+  
+  # Para preservar o formato do dado inserido use (|) "pipe"
+  assinatura: |
+    Fulano
+    Cicrano Org
+    email - cicrano.fulano@gmail.com
+  
+  # Os nós repetidos em cada arquivo são inicialmente denotados por um "e" comercial (&) e por um asterisco (*) mais tarde.
+  id: *nome
+...

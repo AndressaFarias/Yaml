@@ -1,0 +1,211 @@
+# Yaml
+YAML é um padrão de serialização de dados amigável para qualquer linguagem de programação.
+É uma "fusão" entre o JSON, com a identação e quebra de linhas sintaticamente significativas do Python. Porém ao contrário do Python, o YAML não permite o caracter TAB para indentação.
+
+O YAML foi criado especificamente para funcionar bem em casos de uso comum, como: 
+- arquivos de configuração, 
+- arquivos de log, 
+- mensagens entre processos,
+- compartilhamento de dados entre linguagens, 
+- persistência de objetos e 
+- depuração de estruturas de dados complexas. 
+
+
+
+##### CARACTERÍSTICAS
+
+- YAML têm a extensão '.yaml' ou '.yml'
+- É case sensitive
+- É importante indentar o código com **espaços**
+
+##### COMENTÁRIO
+- o hash (#) é usado para comentar o arquivo
+- yaml não permite multiplas linhas em comentário.
+
+##### INICIO E FIM DO DOCUMENTO
+- Pode, porém não é mandatório, ter no inicio e no fim do documento as marcações 
+    --- (para inicio do documento)
+    ... (para finalizar o documento)
+
+##### Exemplo:
+
+~~~yml
+--- # Start
+tipo: "Teste" # ou 'Teste' ou teste
+teste: true
+numero: 1
+nulo: null
+... # End
+~~~ 
+
+##### TIPOS BÁSICOS
+Podemos ter:
+- strings
+    **OBS:**
+    "Strings" não precisam de aspas, podendo ser aspas duplas (") ou únicas ('). Porém elas podem ter
+        "Uma String entre aspas"
+        "Chaves podem estar entre aspas tambem.": "É util se você quiser colocar um ':' na sua chave"
+- null
+- integers
+- floats
+- booleanos
+
+##### TIPOS DATA 
+Para data é seguido o padrão ISO 8601 = (yyyy-mm-ddThh:mm:ss.ffff)
+
+##### TIPOS ESCALARES
+
+~~~yml
+chave: valor
+outra_chave: Outro valor vai aqui
+um_valor_numerico: 100
+notacao_cientifica: 13+12
+boleano: true
+valor_nulo: null
+chave com espaco: valor
+~~~
+
+Sequencias de várias linhas podem ser escritas como um 'bloco literal' (utilizando |), nesse caso ele retorna várias linhas de acordo com a estrutura que foi criada. 
+Ou em um 'bloco compacto (utilizando '>'), no retorno ele junta tudo e retorna uma linha somente.'
+
+~~~yml
+bloco_literal: |
+     Todo esse bloco de texto será o valor da chave 'bloco_literal',
+     preservando a quebra de linhas.
+
+     O literal continua até de-dented, e a primeira indentação é
+     removida.
+
+     Quaisquer linhas que são 'mais identadas' mantém o resto de suas identações -
+     estas linhas serão identadas com 4 espaços
+
+estilo_compacto: >
+    Todo esse bloco de texto será o valor de 'estilo_compacto', mas
+    desta vez, todas as novas linhas serão substituidas com espaço simples.
+
+    Linha em branco, como acima, são convertidas em um caracter de nova linha.
+
+        Linhas 'mais-identadas' mantém suas novas linhas também - 
+        este texto irá aparecer em duas linhas.
+~~~
+
+##### TIPOS DE COLEÇÃO
+Texto aninhado é conseguido através de identação.
+~~~yml
+um_mapa_aninhado:
+    chave: valor
+    outra_chave: Outro valor
+    outro_mapa_aninhado:
+        ola: ola
+~~~
+
+Mapas não tem que ter chaves com string.
+~~~yml
+0.25: uma chave com valor flutuante
+~~~
+
+As chaves podem ser também objetos multi-linhas, utilizando `?` para indicar o começo de uma chave
+~~~yml
+? |
+    Esta é uma chave
+    que tem várias linhas
+: e este é o seu valor
+~~~
+
+Também permite tipos de coleção de chaves, mas muitas linguagens de programação vão reclamar
+
+##### Sequência (equivalente a lista ou arrays)
+
+As listas podem conter colchetes (`[]`), e caso precise usar uma estrutura parecida com dicionário em python (`{}`) 
+Com chaves para o item 'chave:valor': os membros da lista são indicados por (`-`) hífen.
+
+~~~yml
+# Exemplo 1:
+uma_sequencia:
+    - Item 1
+    - Item 2
+    - 0.5 # sequencias podem conter tipos diferentes.
+    - Itemm 4
+    - chave: valor
+      outra_chave: outro_valor
+    - 
+        - Esta é uma sequencia
+        - dentro de outra sequencia
+
+# Exemplo 2:
+  nadar: ["Praia", "Piscina", "Lago"]
+ amigos:                           
+  - nome: "João"                             
+    idade: 25                                                     
+  - {nome: "Eduardo", idade: 24}                           -                               
+  - 
+    nome: "Frederico"                             
+    idade: 26     
+~~~
+
+Como YAML é um super conjunto de JSON, você também escrever mapas JSON de estilo e sequencias
+~~~JSON
+mapa_json{"chave":"valor"}
+json_seq: [3,2,1, "decolar"]
+~~~
+
+##### RECURSOS EXTRA DO YAML #
+
+YAML também tem um recurso útil chamado "âncoras", que permite que você facilmente duplique conteúdo em seu documento. 
+Ambas estas chaves terão o mesmo valor:
+~~~yml
+conteudo_ancora: & nome_ancora Essa string irá aparecer como o valor de duas chaves.
+outra_ancora: * nome_ancora
+~~~
+
+YAML também tem tags, que podem ser utilizadas para declarar explicitamente os tipos.
+~~~yml
+string_explicita: !! str 0,5
+~~~
+
+Alguns analisadores implementam tags especificas de linguagem, como este para Python de Tipo de número complexo:
+~~~yml
+numero_complexo_em_python: !! python / complex 1 + 2j
+~~~
+
+##### YAML TIPOS EXTRA
+
+Strings e números não são os únicos escalares que o YAML pode entender.
+Data e 'data e hora' literais no formato ISO também são analisados.
+~~~yml
+datetime: 2001-12-15T02: 59: 43.1Z
+datetime_com_espacos 2001/12/14: 21: 59: 43.10 -5
+Data: 2002/12/14
+~~~
+
+A tag `!!binary` indica que a string é na verdade um base64-encoded (condificado)
+representação de um blob binário: 
+~~~yml
+gif_file: !!binary |
+    R0lGODlhDAAMAIQAAP//9/X17unp5WZmZgAAAOfn515eXvPz7Y6OjuDg4J+fn5
+    OTk6enp56enmlpaWNjY6Ojo4SEhP/++f/++f/++f/++f/++f/++f/++f/++f/+
+    +f/++f/++f/++f/++f/++SH+Dk1hZGUgd2l0aCBHSU1QACwAAAAADAAMAAAFLC
+    AgjoEwnuNAFOhpEMTRiggcz4BNJHrv/zCFcLiwMWYNG84BwwEeECcgggoBADs=
+~~~
+
+YAML também tem um tipo de conjunto, que se parece com isso:
+~~~yml
+set:
+    ? item1
+    ? item2
+    ? item3
+~~~
+
+Como Python, são apenas conjuntos de mapas com valores nulos; o acima é equivalente a:
+~~~python
+set2:
+    item1: nulo
+    item2: nulo
+    item3: nulo
+~~~
+
+
+#### REFERENCIA #
+- https://learnxinyminutes.com/docs/pt-br/yaml-pt/
+- https://medium.com/@akio.miyake/introdu%C3%A7%C3%A3o-b%C3%A1sica-ao-yaml-para-ansiosos-2ac4f91a4443
+- https://yaml.org/spec/1.2/spec.html

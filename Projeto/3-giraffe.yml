@@ -1,0 +1,52 @@
+
+    # https://www.youtube.com/watch?v=cdLNKUoMc6c
+
+# COMENTÁRIO
+
+# Podemos definir pares chave-valor, litas de variaveis e objetos
+# é muito parecido com o JSON
+
+# O escopo dentro do yaml é definido com o recuoindentação.
+# tdo que possui a mesm indentação está no mesmo nivel
+
+# chave básica
+person: # o objeto pessoa tem acesso ma todas essas variaveis.
+  name: 'mike'
+  name2: &name2 "Florinda"
+  occupation: 'programmer'
+  age: 23
+  ano_Nscimento: !!float 1986 # 1986.0
+  gpa: 3.5      # número de ponto flutuante
+  cep:!!str 91.520    # "91.520""
+  fav_num: 1e+10    # número complexos
+  male: true
+  birthday: 1994-02-06 14:33:22        # datas são definidas pelo padrão ISO 8601
+  flaws: null
+  hobbies: 
+  - hiking
+  - movies
+  - riding bike
+  movies: ["Batman", "Vingadores"]
+  friends:
+  - name: "Bruna"
+    age: 27
+  - 
+    name: darlan
+    age: 36
+  decription: > # o retorno será dado em uma única linha
+    O termo DevOps deriva da junção das palavras
+    "desenvolvimento" e "operações", 
+    sendo uma prática de engenharia de software 
+    que possui o intuito de unificar 
+    o desenvolvimento de software e a operação de software.
+  signature: | # o retorno preservará a  indentação
+      Andressa Idalgo
+      Compasso
+      email - andressa.farias@compasso.com.br
+  id: *name2 #Florinda
+  
+  base: &base
+    var1: value1
+  
+  foo:
+    <<: *base
